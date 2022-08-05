@@ -107,13 +107,12 @@ def show_cam(previewName, cam_num):
         k = cv2.waitKey(10) & 0xff # Press 'ESC' for exiting video
         if k == 27:#esc
             break
-        
-            
-            
-            
-        
+                  
     print("\n [INFO] Exiting Program and cleanup stuff")
     cam.release()
+    
+    
+  
         
 def write_cam_1(previewName, cam_num):
     global base_path
@@ -160,25 +159,37 @@ def ImageOnDisplay():
     global id
     
     index = 0
+    count11 = 0
     target_dir = "image/" + str(id) + "/"
     file_list = glob.glob(target_dir + "*.*")
     
     if (id == 1):
         for i in file_list:
+            count11 += 1
             filePath = cv2.imread(file_list[index])
             filePaths = cv2.resize(filePath, (0, 0), None, .5, .5)
 
-            cv2.imshow(str(i), filePaths)
+            cv2.imshow('image' + str(count11), filePaths)
             index += 1
-        if (id != 1):
-            destroyAllWindows()
-                
+            
     if (id == 2):
         for i in file_list:
+            count11 += 1
             filePath = cv2.imread(file_list[index])
             filePaths = cv2.resize(filePath, (0, 0), None, .5, .5)
 
-            cv2.imshow(str(i), filePaths)
+            cv2.imshow('image' + str(count11), filePaths)
             index += 1
-        if (id != 2):
-            destroyAllWindows()
+            
+            
+    
+            
+           
+            
+    
+            
+            
+if __name__ == "__main__":
+    thread1 = showcamThread("front", 0)
+    
+    thread1.start()
