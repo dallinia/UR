@@ -1,21 +1,20 @@
+from asyncio.mixins import _global_lock
 import datetime
 import cv2
 import threading
 import os
 import time
+from cv2 import destroyAllWindows
 import keyboard
 import numpy as np
 from PIL import Image
-
+import glob
 
 
 path = 'dataset'
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-base_path = os.path.dirname(os.path.abspath("__file__"))
-base_path = base_path+"\\"+str(id)
-#if not os.path.exists(base_path): #이 명령어는 해당 사용자 폴더가 없을시 폴더를 자동으로 만들어 준다
-    #os.makedirs(base_path)
 i = 0
+
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read('trainer/trainer.yml')
@@ -26,6 +25,7 @@ count1 = 0
 count2 = 0
 
 k = cv2.waitKey(10) & 0xff
+
 
 
 
@@ -71,23 +71,25 @@ def show_cam(previewName, cam_num):
             # Check if confidence is less them 100 ==> "0" is perfect match 
             if (confidence < 80):
                 id = id
-                print(id)
                 confidence = "  {0}%".format(round(100 - confidence))
                 
                 
                 if (id == 1):
+                    ImageOnDisplay()
                     if k == 100:#d
-                        base_path = os.path.dirname(os.path.abspath("__file__"))
-                        base_path = base_path+"\\"+str(id)
+                        #base_path = os.path.dirname(os.path.abspath("__file__"))
+                        base_path = 'image' + '/' + str(id)
                         if not os.path.exists(base_path): #이 명령어는 해당 사용자 폴더가 없을시 폴더를 자동으로 만들어 준다
                             os.makedirs(base_path)
                         write_cam_1('inside', 1)
                         print("image save")
+                    
                         
                 if (id == 2):
+                    ImageOnDisplay()
                     if k == 100:#d
                         base_path = os.path.dirname(os.path.abspath("__file__"))
-                        base_path = base_path+"\\"+str(id)
+                        base_path = base_path+"\\"+'image' + '/' + str(id)
                         if not os.path.exists(base_path): #이 명령어는 해당 사용자 폴더가 없을시 폴더를 자동으로 만들어 준다
                             os.makedirs(base_path)
                         write_cam_2('inside', 1)
@@ -102,10 +104,9 @@ def show_cam(previewName, cam_num):
         
         cv2.imshow('camera' ,img) 
         cv2.imshow('camera' ,img)
-        print(id)
         k = cv2.waitKey(10) & 0xff # Press 'ESC' for exiting video
         if k == 27:#esc
-            break 
+            break
         
             
             
@@ -132,7 +133,7 @@ def write_cam_1(previewName, cam_num):
         
     
     time.sleep(2)
-    cv2.imwrite((str(id) + "/User" + '.' + str(id) + '.' + str(count1) + ".jpg"), frame)#사진이 저장되는 이름 
+    cv2.imwrite(('image' + '/' + str(id) + "/User" + '.' + str(id) + '.' + str(count1) + ".jpg"), frame)#사진이 저장되는 이름 
     
 def write_cam_2(previewName, cam_num):
     global base_path
@@ -152,12 +153,32 @@ def write_cam_2(previewName, cam_num):
         
     
     time.sleep(2)
-    cv2.imwrite((str(id) + "/User" + '.' + str(id) + '.' + str(count2) + ".jpg"), frame)#사진이 저장되는 이름
-    
+    cv2.imwrite(('image' + '/' + str(id) + "/User" + '.' + str(id) + '.' + str(count2) + ".jpg"), frame)#사진이 저장되는 이름
 
-     
-            
-if __name__ == "__main__":
-    thread1 = showcamThread("front", 0)
+
+def ImageOnDisplay():
+    global id
     
-    thread1.start()
+    index = 0
+    target_dir = "image/" + str(id) + "/"
+    file_list = glob.glob(target_dir + "*.*")
+    
+    if (id == 1):
+        for i in file_list:
+            filePath = cv2.imread(file_list[index])
+            filePaths = cv2.resize(filePath, (0, 0), None, .5, .5)
+
+            cv2.imshow(str(i), filePaths)
+            index += 1
+        if (id != 1):
+            destroyAllWindows()
+                
+    if (id == 2):
+        for i in file_list:
+            filePath = cv2.imread(file_list[index])
+            filePaths = cv2.resize(filePath, (0, 0), None, .5, .5)
+
+            cv2.imshow(str(i), filePaths)
+            index += 1
+        if (id != 2):
+            destroyAllWindows()
