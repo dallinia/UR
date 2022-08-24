@@ -25,14 +25,14 @@ def capture():
         #data_into_list = data.split("\n")
         f.close()
         face_id = str(input('enter our id: '))
-        data.append(face_id)
         if (face_id in data):
             print("이미 존재하는 아이디 입니다.")
             return()
+        data.append(face_id)
         print("\n [INFO] Initializing face capture. Look the camera and wait ...")
         with open('sp500.txt','w', encoding='UTF-8') as f:
-            for name in data:
-                f.write(name + '\n')
+            for face_id in data:
+                f.write(face_id + '\n')
         # Initialize individual sampling face count
                 
         def getImagesAndLabels(path):
