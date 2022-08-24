@@ -9,8 +9,8 @@ path = 'dataset'
 id_path = "sp500.txt"
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 
-if not os.path.isfile(path):
-    f = open("sp500.txt", 'w')
+#if not os.path.isfile(path):
+    #f = open("sp500.txt", 'w')
 
 def capture():
     count2 = 0
@@ -22,16 +22,17 @@ def capture():
         # For each person, enter one numeric face id
         f = open('./sp500.txt', 'r')
         data = f.readlines()
-        while True:
-            line = f.readline().strip()
-            if not line:break
-            data.append(line)
-        face_id = int(input('enter our id: '))
+        #data_into_list = data.split("\n")
+        f.close()
+        face_id = str(input('enter our id: '))
         data.append(face_id)
+        if (face_id in data):
+            print("이미 존재하는 아이디 입니다.")
+            return()
         print("\n [INFO] Initializing face capture. Look the camera and wait ...")
         with open('sp500.txt','w', encoding='UTF-8') as f:
             for name in data:
-                f.write(str(name)+'\n')
+                f.write(name + '\n')
         # Initialize individual sampling face count
                 
         def getImagesAndLabels(path):
