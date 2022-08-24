@@ -26,11 +26,9 @@ k = cv2.waitKey(10) & 0xff
 def show_cam(previewName, cam_num):
     
     f = open('./sp500.txt', 'r')
-    data = f.readlines()
-    while True:
-        line = f.readline().strip()
-        if not line:break
-        data.append(line)
+    data = f.read()
+    data_into_list = data.split("\n")
+    f.close()
     
     cam = cv2.VideoCapture(cam_num)
     minW = 0.1*cam.get(3)
@@ -55,12 +53,21 @@ def show_cam(previewName, cam_num):
             if (confidence < 80):
                 id = id
                 confidence = "  {0}%".format(round(100 - confidence))
-                print(data)
                 
-                if (id in data):
-                    Motor()
-                    return()
+                
+                if (str(id) in data_into_list):
+                    print(id)
+                    AN = input("당신의 아이디가 맞습니까?: ")
+                    if (AN == 'Yes'):
+                        print("Hello" + ' ' + str(id))
+                        return()
                     
+                    elif (AN == 'No'):
+                        break
+                
+                else:
+                    print("등록되지 않은 아이디 입니다.")
+                    unknown()
                     
                     
             else:
@@ -82,7 +89,9 @@ def show_cam(previewName, cam_num):
     cam.release()
     
 def Motor():
-    print("hello")
+    global id
+    
+    print("hello" + str(id))
         
 def unknown():
     an = input("새로운 사용자입니다. 등록하시겠습니까? : ")
@@ -111,7 +120,7 @@ def capture():
             for imagePath in imagePaths:
                 PIL_img = Image.open(imagePath).convert('L') # convert it to grayscale
                 img_numpy = np.array(PIL_img,'uint8')
-                id = int(os.path.split(imagePath)[-1].split(".")[1])
+                id = str(os.path.split(imagePath)[-1].split(".")[1])
                 faces = face_detector.detectMultiScale(img_numpy)
                 for (x,y,w,h) in faces:
                     faceSamples.append(img_numpy[y:y+h,x:x+w])
