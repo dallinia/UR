@@ -9,5 +9,3 @@ if __name__ == '__main__':
     if (name == '2'):
         CaptureTrain.capture()
         
-    if (name == '3'):
-        face.aabc()
