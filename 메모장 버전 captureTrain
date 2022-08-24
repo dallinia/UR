@@ -21,7 +21,7 @@ def capture():
         face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
         # For each person, enter one numeric face id
         f = open('./sp500.txt', 'r')
-        data = f.readlines()
+        data = f.read()
         #data_into_list = data.split("\n")
         f.close()
         face_id = str(input('enter our id: '))
