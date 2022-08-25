@@ -31,7 +31,6 @@ def show_cam(previewName, cam_num):
     cam = cv2.VideoCapture(cam_num)
     minW = 0.1*cam.get(3)
     minH = 0.1*cam.get(4)
-    video = -1 # 객체를 담을 수 있는 변수 선언(-1로 초기화한거임.)
    
 
     while True:
@@ -98,4 +97,60 @@ def unknown():
             
     if (an == "No"):
         exit()
+        
+def Delect_persion():
+    global data_into_list
+    global id
     
+    f = open('./ID.txt', 'r')
+    data = f.read()
+    data_into_list = data.split("\n")
+    f.close()
+    
+    cam = cv2.VideoCapture(0)
+    minW = 0.1*cam.get(3)
+    minH = 0.1*cam.get(4)
+   
+
+    while True:
+        ret, img =cam.read()
+        gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+        
+        faces = faceCascade.detectMultiScale( 
+            gray,
+            scaleFactor = 1.2,
+            minNeighbors = 5,
+            minSize = (int(minW), int(minH)),
+        )
+        for(x,y,w,h) in faces:
+            cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
+            id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
+            # Check if confidence is less them 100 ==> "0" is perfect match 
+            if (confidence < 80):
+                id = id
+                confidence = "  {0}%".format(round(100 - confidence))
+                
+                
+                if (str(id) in data_into_list):
+                    print(id)
+                    ask()
+    
+                else:
+                    print("등록되지 않은 아이디 입니다.")
+                    #unknown()
+                    
+def ask():
+    global data_into_list
+    global id
+    
+
+    ask = input("아이디를 삭제하시겠습니까?: ")
+    if (ask == "Yes"):
+        while id in data_into_list:
+            data_into_list.remove(id)
+
+
+        with open('ID.txt','w', encoding='UTF-8') as f:
+            for id in data_into_list:
+                f.write(id + '\n')
+                exit()
