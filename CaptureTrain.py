@@ -88,18 +88,3 @@ def DelecteAllFile(filePath):
     else:
         return 'Directory Not Found'
     
-def Delect_persion():
-    f = open('./ID.txt', 'r')
-    data = f.read()
-    data_into_list = data.split("\n")
-    f.close()
-
-    ID = input("삭제할 아이디를 입력해주세요: ")
-    while ID in data_into_list:
-        data_into_list.remove(ID)
-
-
-    with open('ID.txt','w', encoding='UTF-8') as f:
-        for ID in data_into_list:
-            f.write(ID + '\n')
-            
