@@ -11,4 +11,4 @@ if __name__ == '__main__':
         CaptureTrain.capture()
         
     if (name == '3'):
-        CaptureTrain.Delect_persion()
+        face.Delect_persion()
