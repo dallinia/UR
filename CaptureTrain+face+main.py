@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import os
 from PIL import Image
-import CaptureTrain
 import random
 
 cascadePath = "haarcascade_frontalface_default.xml"
@@ -16,10 +15,7 @@ id_path = "ID.txt"
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 path = 'dataset'
 dir_path = 'trainer/trainer.yml'
-if (os.path.isfile(dir_path) == False):
-       CaptureTrain.capture()
 recognizer.read('trainer/trainer.yml')
-font = cv2.FONT_HERSHEY_SIMPLEX
 
 class Captureface:
     
@@ -143,10 +139,6 @@ class Captureface:
                     id = "unknown"
                     confidence = "  {0}%".format(round(100 - confidence))
                     unknown()
-                    
-                
-                cv2.putText(img, str(id), (x+5,y-5), font, 1, (255,255,255), 2)
-                cv2.putText(img, str(confidence), (x+5,y+h-5), font, 1, (255,255,0), 1)  
             
             cv2.imshow('camera' ,img) 
             cv2.imshow('camera' ,img)
@@ -212,7 +204,7 @@ def Motor():
     global id
     global Scaffolding
         
-    print("hello" )
+    print("hello")
     exit()
         
         
@@ -220,7 +212,7 @@ def Motor():
 def unknown():
     an = input("새로운 사용자입니다. 등록하시겠습니까? : ")
     if (an == "Yes"):
-        CaptureTrain.capture()
+        Captureface.capture()
                 
     if (an == "No"):
         exit()
@@ -273,7 +265,7 @@ def ask():
 
     ask = input("아이디를 삭제하시겠습니까?: ")
     if (ask == "Yes"):
-        CaptureTrain.delsf()
+        Captureface.delsf()
         while id in data_into_list:
             data_into_list.remove(id)
 
@@ -300,3 +292,4 @@ if __name__ == '__main__':
     if (name == '3'):
         Delect_persion()
                 
+
